@@ -12,6 +12,44 @@ gald3r uses [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [5.0.52] - 2026-09-06
+
+One resident process per project now serves your editors, your agents and the mesh. This is the first plain-numbered release: 5.0.52 follows 5.0.0-beta.51 and the beta suffix is retired.
+
+### Highlights
+
+**The project agent is one process.** `gald3r project-agent serve` runs the Valkyrie connector, the MCP tool server, the assignment channel for swarm lanes and the ACP editor bridge inside a single resident per project. `gald3r mcp serve` and `gald3r acp` are thin bridges onto it and start it on demand, so an editor, a chat session and a swarm no longer each spawn their own copy.
+
+**Bring your own MCP servers.** `gald3r mcp plugin add|list|remove` registers external MCP servers (stdio or Streamable HTTP) in a per-project catalog; their tools appear, namespaced, next to gald3r's own through every host you already use. Computer-use tools are available behind a single project setting.
+
+**Editors that read the whole tree.** The file explorer in Throne and gald3r_ide no longer stops partway down a project, tells you when a listing is incomplete, and treats nested git checkouts as separate. Syntax highlighting is readable in every theme, with contrast gates that keep it that way.
+
+### Throne and gald3r_ide
+- In-app updates install themselves; when one cannot, the dialog names the downloaded installer and opens its folder.
+- The updater reads the release that actually ships Throne, so an installed build is never offered an older one.
+- Both apps install under one shared root with proper display names and the Mjolnir icon.
+- The AI-edit diff view keeps a persistent, timestamped audit trail shared by both apps.
+
+### CLI and framework
+- `gald3r logs event` gives every harness one session-lifecycle ledger.
+- `gald3r_longship chat` joins the project agent's chat seat; `gald3r_longship backend` now runs.
+- `gald3r task list`, `task ready`, `task next` and `bug list` filter by `--subsystem`; task and bug records can name the subsystem they belong to, and the registry ships populated.
+- `gald3r vault search` and `gald3r memory recall` rank the most relevant record first.
+- A second live session on the same checkout is announced on stderr instead of colliding silently.
+- `gald3r install update` no longer accumulates backup binaries.
+- `gald3r sync` targets every installed platform in the repo by default.
+
+### Reliability
+- On Linux and macOS, stopping an autopilot run or reaping its orphans could kill the shell that launched it; process-tree kills now never signal their own process group.
+- Verb groups reject unknown subcommands instead of printing help and exiting 0.
+- `go-code` accepts `--allow-usage-spend` like `go` and `go-review`.
+- `gald3r doctor` no longer flags a default `gald3r setup` project as failing platform checks.
+- A release cut fails loudly if the Throne updater feed cannot be assembled.
+
+### Upgrade
+- CLI: `gald3r install update`.
+- Throne and gald3r_ide: download the installer for your platform from this release's assets.
+
 ## [5.0.0-beta.51] - 2026-09-04
 
 Throne, gald3r_ide and the CLI now ship together on one tag.
